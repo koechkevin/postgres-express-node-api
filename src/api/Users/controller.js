@@ -65,7 +65,7 @@ const createStaff = async (req, res) => {
 
 const getStaff = async (req, res) => {
   try {
-    const { query: { page } } = req;
+    const { query: { page, idNumber } } = req;
     const limit = req.query.limit || 10;
     const count = await models.UserRole.count();
     const pageCount = Math.ceil(count / limit);
@@ -75,6 +75,7 @@ const getStaff = async (req, res) => {
       include: [{
         model: models.Staff,
         as: 'staff',
+        where: idNumber ? { idNumber } : {},
         attributes: { exclude: ['password'] }
       }, {
         model: models.Role,

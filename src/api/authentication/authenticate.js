@@ -5,8 +5,8 @@ import models from '../../database/models';
 
 dotenv.config();
 const authenticate = async (req, res, next) => {
-  const { headers: { authorization } } = req;
-  if (!authorization) {
+  const { headers: { authorization }, headers } = req;
+  if (!headers || !authorization) {
     return res.status(401)
       .json({
         success: false,

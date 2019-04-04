@@ -29,6 +29,7 @@ Router.post(
 
 Router.get(
   '/users/staff',
+  authenticate,
   allowRoles(['Super Admin', 'Manager']),
   getStaff
 );

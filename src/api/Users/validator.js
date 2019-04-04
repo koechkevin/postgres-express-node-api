@@ -26,7 +26,7 @@ const validateLoginUser = async (req, res, next) => {
     { param: 'idNumber', msg: 'the id number you provided does not match any user' }
   ];
   if (!user) {
-    return users.validationErrorHandler(req, res, errors, 409);
+    return users.validationErrorHandler(req, res, errors, 404);
   }
   next();
 };
