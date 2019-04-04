@@ -79,6 +79,25 @@ const validateUniqueStaff = async (req, res, next) => {
   next();
 };
 
+const validateUpdateStaff = async (req, res, next) => {
+  const { params: { idNumber } } = req;
+  const isValid = await models.Staff.findOne(
+    {
+      where: {
+        idNumber
+      }
+    }
+  );
+  if (!isValid) {
+    const errors = [
+      { param: 'idNumber', msg: 'The user cannot be found' },
+    ];
+    return users.validationErrorHandler(req, res, errors, 404);
+  }
+  if (req.body.password) delete req.body.password;
+  next();
+};
+
 const validateRole = async (req, res, next) => {
   req.checkBody('roleName', 'roleName is required').notEmpty().ltrim();
   req.checkBody('description', 'description is required').notEmpty().ltrim();
@@ -101,5 +120,5 @@ const validateRole = async (req, res, next) => {
 };
 
 export default {
-  validateLogin, validateLoginUser, validateNewUser, checkIfRoleIsValid, validateUniqueStaff, validateRole
+  validateLogin, validateLoginUser, validateNewUser, checkIfRoleIsValid, validateUniqueStaff, validateRole, validateUpdateStaff
 };

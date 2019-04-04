@@ -5,10 +5,12 @@ import auth from '../authentication/authenticate';
 import validator from './validator';
 
 const { authenticate, allowRoles, } = auth;
-const { createRoles, createStaff, getStaff } = controller;
+const {
+  createRoles, createStaff, getStaff, updateStaff
+} = controller;
 const {
   validateLogin, validateLoginUser, validateNewUser,
-  checkIfRoleIsValid, validateUniqueStaff, validateRole
+  checkIfRoleIsValid, validateUniqueStaff, validateRole, validateUpdateStaff
 } = validator;
 const Router = express.Router();
 
@@ -25,6 +27,14 @@ Router.post(
   allowRoles(['Super Admin']),
   validateNewUser, checkIfRoleIsValid, validateUniqueStaff,
   createStaff
+);
+
+Router.put(
+  '/users/staff/:idNumber/update',
+  authenticate,
+  allowRoles(['Super Admin']),
+  validateUpdateStaff,
+  updateStaff
 );
 
 Router.get(

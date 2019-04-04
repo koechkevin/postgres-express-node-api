@@ -63,6 +63,32 @@ const createStaff = async (req, res) => {
   }
 };
 
+const updateStaff = async (req, res) => {
+  try {
+    const { body, params: { idNumber } } = req;
+    const didUpdate = await models.Staff.update({ ...body }, {
+      where: {
+        idNumber
+      }
+    });
+    if (didUpdate[0]) {
+      const updated = await models.Staff.findOne({
+        where: { idNumber: req.body.idNumber || idNumber }
+      });
+      return res.status(200).json({
+        message: 'success', updated
+      });
+    }
+    res.status(400).json({
+      error: 'no record was updated'
+    });
+  } catch (error) {
+    res.status(400).json({
+      error: error.message
+    });
+  }
+};
+
 const getStaff = async (req, res) => {
   try {
     const { query: { page, idNumber } } = req;
@@ -99,4 +125,6 @@ const getStaff = async (req, res) => {
   }
 };
 
-export default { createRoles, createStaff, getStaff };
+export default {
+  createRoles, createStaff, getStaff, updateStaff
+};
