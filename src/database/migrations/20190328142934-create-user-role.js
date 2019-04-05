@@ -21,6 +21,6 @@ module.exports = {
       allowNull: false,
       type: Sequelize.DATE
     }
-  }),
+  }, { paranoid: true }),
   down: (queryInterface, Sequelize) => queryInterface.dropTable('UserRoles')
 };

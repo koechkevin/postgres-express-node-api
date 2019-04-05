@@ -1,4 +1,5 @@
 import crypt from 'bcrypt';
+import { Op } from 'sequelize';
 import models from '../../database/models';
 
 const createRoles = async (req, res) => {
@@ -93,11 +94,18 @@ const getStaff = async (req, res) => {
   try {
     const { query: { page, idNumber } } = req;
     const limit = req.query.limit || 10;
-    const count = await models.UserRole.count();
+    const count = await models.UserRole.count({
+      where: {
+        deletedAt: null
+      }
+    });
     const pageCount = Math.ceil(count / limit);
     const currentPage = page < 1 || !page || pageCount === 0 ? 1 : Math.min(page, pageCount);
     const offset = limit * (currentPage - 1);
     const staff = await models.UserRole.findAll({
+      where: {
+        deletedAt: null
+      },
       include: [{
         model: models.Staff,
         as: 'staff',
@@ -141,6 +149,32 @@ const getRoles = async (req, res) => {
   }
 };
 
+const deleteStaff = async (req, res) => {
+  const { params: { idNumber } } = req;
+  try {
+    const staff = await models.Staff.findOne(
+      {
+        where: {
+          idNumber
+        }
+      }
+    );
+    const isDeleted = await models.UserRole.update({ deletedAt: new Date() }, {
+      where: {
+        [Op.and]: [{ staffID: staff.id }, { deletedAt: null }]
+      }
+    });
+    if (isDeleted[0]) return res.status(200).json({ message: 'success' });
+    res.status(400).json({
+      error: 'no record was deleted'
+    });
+  } catch (error) {
+    res.status(400).json({
+      error: error.message
+    });
+  }
+};
+
 export default {
-  createRoles, createStaff, getStaff, updateStaff, getRoles
+  createRoles, createStaff, getStaff, updateStaff, getRoles, deleteStaff
 };

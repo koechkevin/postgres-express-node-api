@@ -8,6 +8,10 @@ module.exports = (sequelize, DataTypes) => {
     roleId: {
       allowNull: false,
       type: DataTypes.INTEGER
+    },
+    deletedAt: {
+      allowNull: true,
+      type: DataTypes.DATE
     }
   }, {});
   UserRole.associate = (models) => {
