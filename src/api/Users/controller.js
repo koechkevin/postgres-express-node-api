@@ -125,6 +125,22 @@ const getStaff = async (req, res) => {
   }
 };
 
+const getRoles = async (req, res) => {
+  try {
+    const roles = await models.Role.findAll({
+      order: [['id', 'DESC']]
+    });
+    res.status(200).json({
+      status: 'success',
+      roles
+    });
+  } catch (error) {
+    res.status(400).json({
+      error: error.message
+    });
+  }
+};
+
 export default {
-  createRoles, createStaff, getStaff, updateStaff
+  createRoles, createStaff, getStaff, updateStaff, getRoles
 };

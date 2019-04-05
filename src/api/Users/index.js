@@ -6,7 +6,7 @@ import validator from './validator';
 
 const { authenticate, allowRoles, } = auth;
 const {
-  createRoles, createStaff, getStaff, updateStaff
+  createRoles, createStaff, getStaff, updateStaff, getRoles
 } = controller;
 const {
   validateLogin, validateLoginUser, validateNewUser,
@@ -35,6 +35,13 @@ Router.put(
   allowRoles(['Super Admin']),
   validateUpdateStaff,
   updateStaff
+);
+
+Router.get(
+  '/Users/roles',
+  authenticate,
+  allowRoles(['Super Admin', 'Manager']),
+  getRoles
 );
 
 Router.get(
