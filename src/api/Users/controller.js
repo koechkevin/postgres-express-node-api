@@ -149,7 +149,7 @@ const getRoles = async (req, res) => {
   }
 };
 
-const deleteStaff = async (req, res) => {
+const deleteRole = async (req, res) => {
   const { params: { idNumber } } = req;
   try {
     const staff = await models.Staff.findOne(
@@ -176,5 +176,5 @@ const deleteStaff = async (req, res) => {
 };
 
 export default {
-  createRoles, createStaff, getStaff, updateStaff, getRoles, deleteStaff
+  createRoles, createStaff, getStaff, updateStaff, getRoles, deleteRole
 };

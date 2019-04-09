@@ -6,7 +6,7 @@ import validator from './validator';
 
 const { authenticate, allowRoles, } = auth;
 const {
-  createRoles, createStaff, getStaff, updateStaff, getRoles, deleteStaff
+  createRoles, createStaff, getStaff, updateStaff, getRoles, deleteRole
 } = controller;
 const {
   validateLogin, validateLoginUser, validateNewUser,
@@ -56,7 +56,7 @@ Router.delete(
   authenticate,
   allowRoles(['Super Admin']),
   validateUpdateStaff,
-  deleteStaff
+  deleteRole
 );
 
 Router.post(
