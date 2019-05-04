@@ -18,8 +18,12 @@ const getStudents = async (req, res) => {
   try {
     const { query: { page } } = req;
     const limit = req.query.limit || 10;
+    const admQuery = req.query.adm ? {
+      id: req.query.adm
+    } : {};
     const count = await models.Student.count({
       where: {
+        ...admQuery,
         deletedAt: null
       }
     });
@@ -29,6 +33,7 @@ const getStudents = async (req, res) => {
     const students = await models.Student.findAll({
       where: {
         deletedAt: null,
+        ...admQuery,
       },
       offset,
       limit,
